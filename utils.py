@@ -199,7 +199,7 @@ def data_partition(fname):
     return [user_train, user_valid, user_test, usernum, itemnum, timenum]
 
 
-def evaluate(model, dataset, args):
+def evaluate(model, dataset, args, evalat = 500):
     [train, valid, test, usernum, itemnum, timenum] = copy.deepcopy(dataset)
 
     NDCG = 0.0
@@ -231,7 +231,7 @@ def evaluate(model, dataset, args):
         rated.add(test[u][0][0])
         rated.add(0)
         item_idx = [test[u][0][0]]
-        for _ in range(100):
+        for _ in range(evalat):
             t = np.random.randint(1, itemnum + 1)
             while t in rated: t = np.random.randint(1, itemnum + 1)
             item_idx.append(t)
@@ -255,7 +255,7 @@ def evaluate(model, dataset, args):
     return NDCG / valid_user, HT / valid_user
 
 
-def evaluate_valid(model, dataset, args):
+def evaluate_valid(model, dataset, args, evalat=500):
     [train, valid, test, usernum, itemnum, timenum] = copy.deepcopy(dataset)
 
     NDCG = 0.0
@@ -281,7 +281,7 @@ def evaluate_valid(model, dataset, args):
         rated.add(valid[u][0][0])
         rated.add(0)
         item_idx = [valid[u][0][0]]
-        for _ in range(100):
+        for _ in range(evalat):
             t = np.random.randint(1, itemnum + 1)
             while t in rated: t = np.random.randint(1, itemnum + 1)
             item_idx.append(t)
